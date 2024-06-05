@@ -35,5 +35,22 @@ this creates a database for you
 Update this database configuration in application.properties in main/resources/application.properties
 ```dtd
 spring.application.name=spring-webflux-test
-spring.data.mongodb.uri=mongodb://127.0.0.1:27017/ems
+spring.data.mongodb.uri=mongodb://127.0.0.1:27018/ems
 ```
+I changed the port number since i have mongo installed locally and so that fiddles with the one in docker continer
+
+Now what happens when you stop a container using
+```dtd
+docker container stop <container_number>;
+```
+![img.png](img.png)
+
+You can restart it using 
+```dtd
+docker container restart <container-image_number>
+```
+You can get the previously stopped container image number using
+```dtd
+docker container ls -l
+```
+this should give you all the containers that are in your machine and are running also stopped as well
