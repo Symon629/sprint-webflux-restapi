@@ -37,6 +37,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Flux<EmployeeDto> getAllEmployees() {
         Flux<Employee> employees = employeeRepository.findAll();
-        return employees.map(employeeEntity -> EmployeeMapper.mapToEmployeeDto(employeeEntity));
+        return employees.map(employeeEntity -> EmployeeMapper.mapToEmployeeDto(employeeEntity)).switchIfEmpty(Flux.empty());
     }
+
+
+    @Override
+    public Mono<EmployeeDto> updateEmployees(EmployeeDto employeeDto,String employeeId) {
+        Mono<Employee> employeeMono = employeeRepository.findById(employeeId);
+        Mono<Employee> employeeEntity = employeeMono.flatMap((employee)->{
+            employee.setEmail(employeeDto.getEmail());
+            employee.setFirstName(employeeDto.getFirstName());
+            employee.setLastName(employeeDto.getLastName());
+            return employeeRepository.save(employee);
+        });
+        return employeeEntity.map((employeetoDto)->EmployeeMapper.mapToEmployeeDto(employeetoDto));
+    }
+
+    @Override
+    public Mono<Void> deleteEmployeeById(String employeeId) {
+        employeeRepository.findById(employeeId)
+                .flatMap(employee -> employeeRepository.delete(employee));
+        //Or you could just do
+        // employeeRepository.deleteById(employeeId);
+        return null;
+    }
+
 }

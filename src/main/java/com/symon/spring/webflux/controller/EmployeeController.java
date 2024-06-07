@@ -20,12 +20,16 @@ public class EmployeeController {
         return employeeService.saveEmployee(employeeDto);
     }
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public Mono<EmployeeDto> getEmployee(@PathVariable("id") String employeeId){
         return employeeService.getEmployee(employeeId);
     }
     @GetMapping("/all")
     public Flux<EmployeeDto> getAllEmployees(){
         return employeeService.getAllEmployees();
+    }
+    @PutMapping("/{id}")
+    public Mono<EmployeeDto> updateEmployee(@PathVariable("id") String employeeId, @RequestBody EmployeeDto employeeDto){
+        return employeeService.updateEmployees(employeeDto,employeeId);
     }
 }
